@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
+
 using Sample.Data;
+using Sample.Services.Extensions.DependencyInjection;
+using Sample.Services.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +19,17 @@ builder.Services.AddDbContext<AppDbContext>((provider, options) =>
     });
 });
 
+builder.Services
+    .AddSeedService()
+    .AddUserService();
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(Sample.Services.PlaceHolder).Assembly);
 
 var app = builder.Build();
 
@@ -34,6 +43,9 @@ if (app.Environment.IsDevelopment())
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         context.Database.Migrate();
+
+        var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+        await seedService.ExecuteAsync();
     }
 }
 

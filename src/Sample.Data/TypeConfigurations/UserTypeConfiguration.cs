@@ -43,7 +43,7 @@ public class UserTypeConfiguration : IEntityTypeConfiguration<User>
 
             y.Property(a => a.CreatedAt)
                 .IsRequired()
-                .HasDefaultValue(DateTime.UtcNow);
+                .HasDefaultValueSql("GETUTCDATE()");
 
             y.Property(a => a.UpdatedAt);
             y.Property(a => a.DeletedAt);

@@ -177,3 +177,11 @@ LEFT JOIN [UserProfile] AS [u1] ON [t].[Id] = [u1].[UserId]
 LEFT JOIN [UserAddress] AS [u2] ON [t].[Id] = [u2].[UserId]
 ORDER BY [t].[FirstName], [t].[LastName], [t].[Id], [t].[UserId], [u1].[UserId]
 ```
+
+## Tracking
+
+I'll track issue[^issue-26592].
+
+It appears to be processing as [efcore 6.0.2 milestone](https://github.com/dotnet/efcore/milestone/131).
+
+[^issue-26592]: [efcore6 produces wrong SELECT SQL when Where/OrderBy clauses are applied to Owned properties followed by .Take() #26592](https://github.com/dotnet/efcore/issues/26592)

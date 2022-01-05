@@ -39,7 +39,8 @@ public class UserService : IUserService
         var usersQuery = query
             .OrderBy(x => x.FirstName).ThenBy(x => x.LastName)
             .Skip(skip).Take(limit)
-            .Select(x => mapper.Map<UserModel>(x));
+            .Select(x => mapper.Map<UserModel>(x))
+            .AsNoTracking();
 
         var verificationGeneratedQuery = usersQuery.ToQueryString();
 
@@ -65,9 +66,11 @@ public class UserService : IUserService
             .Skip(skip).Take(limit)
             .Select(x => x.Id);
 
+
         var usersMainQuery = context.Users
             .Where(x => usersIdSubQuery.Contains(x.Id))
-            .Select(x => mapper.Map<UserModel>(x));
+            .Select(x => mapper.Map<UserModel>(x))
+            .AsNoTracking();
 
         var verificationGeneratedQuery = usersMainQuery.ToQueryString();
 

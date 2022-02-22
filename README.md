@@ -1,5 +1,7 @@
 Owned entity query problem faced with EneityFrameworkCore 6.
 
+- It resolved in 6.0.2 ❤️
+
 ## Entities
 
 ### User
@@ -184,4 +186,24 @@ I'll track issue[^issue-26592].
 
 It appears to be processing as [efcore 6.0.2 milestone](https://github.com/dotnet/efcore/milestone/131).
 
+### 6.0.2
+
+It has been generated query expected after update to 6.0.2
+
+```sql
+SELECT [t].[Id], [t].[FirstName], [t].[LastName], [t].[UserId], [u1].[UserId], [u2].[Id], [u2].[City], [u2].[Country], [u2].[Detail], [u2].[Name], [u2].[State], [u2].[Street], [u2].[UserId], [u2].[Zipcode], [t].[CreatedAt], [t].[DeletedAt], [t].[IsDeleted], [t].[UpdatedAt], [u1].[Height], [u1].[Weight]
+FROM (
+    SELECT [u].[Id], [u].[FirstName], [u].[LastName], [u0].[UserId], [u0].[CreatedAt], [u0].[DeletedAt], [u0].[IsDeleted], [u0].[UpdatedAt]
+    FROM [User] AS [u]
+    LEFT JOIN [UserMetadata] AS [u0] ON [u].[Id] = [u0].[UserId]
+    WHERE [u0].[IsDeleted] = CAST(0 AS bit)
+    ORDER BY [u].[FirstName], [u].[LastName]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [t]
+LEFT JOIN [UserProfile] AS [u1] ON [t].[Id] = [u1].[UserId]
+LEFT JOIN [UserAddress] AS [u2] ON [t].[Id] = [u2].[UserId]
+ORDER BY [t].[FirstName], [t].[LastName], [t].[Id], [t].[UserId], [u1].[UserId]
+```
+
 [^issue-26592]: [efcore6 produces wrong SELECT SQL when Where/OrderBy clauses are applied to Owned properties followed by .Take() #26592](https://github.com/dotnet/efcore/issues/26592)
+
